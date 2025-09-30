@@ -8,6 +8,13 @@
 *.so
 *.dylib
 
+.idea/
+.venv/
+
+.terraform/
+.terraform.*
+terraform.**
+
 # Test binary, built with `go test -c`
 *.test
 
