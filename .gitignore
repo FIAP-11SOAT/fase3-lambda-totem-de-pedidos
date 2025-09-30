@@ -11,6 +11,9 @@
 .idea/
 .venv/
 
+lambda-payload.json
+
+
 .terraform/
 .terraform.*
 terraform.**
