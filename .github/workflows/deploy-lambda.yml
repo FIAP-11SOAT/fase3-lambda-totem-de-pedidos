@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      LAMBDA_NAME: ${{ vars.LAMBDA_FUNCTION_NAME }}
-      ECR_REPO: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY_NAME }}
+      AWS_LAMBDA_FUNCTION_NAME: ${{ vars.AWS_LAMBDA_FUNCTION_NAME }}
+      AWS_ECR_REPOSITORY_URL: ${{ vars.AWS_ECR_REPOSITORY_URL }}
 
     steps:
       - name: Checkout repository
@@ -29,18 +29,18 @@ jobs:
 
       - name: Login to Amazon ECR
         run: |
-          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ vars.AWS_ECR_AUTH_ENDPOINT }}
 
       - name: Build Docker image
         run: |
-          docker build -t $ECR_REPO:latest .
+          docker build -t $AWS_ECR_REPOSITORY_URL:latest .
 
       - name: Push Docker image to ECR
         run: |
-          docker push $ECR_REPO:latest
+          docker push $AWS_ECR_REPOSITORY_URL:latest
 
       - name: Update Lambda function
         run: |
           aws lambda update-function-code \
-            --function-name $LAMBDA_NAME \
-            --image-uri $ECR_REPO:latest
+            --function-name $AWS_LAMBDA_FUNCTION_NAME \
+            --image-uri $AWS_ECR_REPOSITORY_URL:latest
