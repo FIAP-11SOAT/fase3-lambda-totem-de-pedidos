@@ -15,6 +15,7 @@ jobs:
     env:
       AWS_LAMBDA_FUNCTION_NAME: ${{ vars.AWS_LAMBDA_FUNCTION_NAME }}
       AWS_ECR_REPOSITORY_URL: ${{ vars.AWS_ECR_REPOSITORY_URL }}
+      AWS_REGION: us-east-1
 
     steps:
       - name: Checkout repository
@@ -29,7 +30,7 @@ jobs:
 
       - name: Login to Amazon ECR
         run: |
-          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ vars.AWS_ECR_AUTH_ENDPOINT }}
+          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${{ vars.AWS_ECR_AUTH_ENDPOINT }}
 
       - name: Build Docker image
         run: |
