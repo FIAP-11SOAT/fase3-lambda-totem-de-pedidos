@@ -15,8 +15,7 @@ lambda-payload.json
 
 
 .terraform/
-.terraform.*
-terraform.**
+.terraform.lock.hcl
 
 # Test binary, built with `go test -c`
 *.test

@@ -25,8 +25,6 @@ def main():
 
     # result = service.search_user_by_cpf("00000000000")
 
-    print("Hello from Lambda!")
-
 
 if __name__ == '__main__':
     main()
