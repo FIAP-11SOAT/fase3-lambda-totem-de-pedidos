@@ -3,7 +3,7 @@ import json
 
 def lambda_handler(event, context):
     body = {
-        "message": "Hello from Lambda!",
+        "message": "Pipeline funcionando com sucesso !",
         "input": event,
         "context_function_name": context.function_name,
         "context_memory_limit_in_mb": context.memory_limit_in_mb,
