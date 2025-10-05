@@ -23,11 +23,11 @@ def main():
     #     password="Testando@12345"
     # )
 
-    response = service.authenticate_user("00000000000")
+    # response = service.authenticate_user("00000000000")
+    # print(response)
 
-    print(response)
-
-    # result = service.search_user_by_cpf("00000000000")
+    result = service.search_user_by_cpf("00000000000a")
+    print(result)
 
 
 if __name__ == '__main__':

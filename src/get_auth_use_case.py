@@ -7,9 +7,15 @@ from src.http_response import http_response
 
 
 def get_auth_use_case(service: AuthService, query: dict):
-    tax_id = query.get("tax_id")
+    tax_id = query.get("tax_id", None)
+    if not tax_id:
+        logging.error("tax_id is required in query parameters.")
+        return http_response(status_code=400, body={"message": "tax_id is required."})
     try:
         user = service.search_user_by_cpf(cpf=tax_id)
+        if not user:
+            logging.error(f"User not found for tax_id: {tax_id}")
+            return http_response(status_code=404, body={"message": "User not found."})
         response = service.authenticate_user(username=user["Username"])
         return http_response(status_code=200,
                              body={"message": "Authentication successful.",
