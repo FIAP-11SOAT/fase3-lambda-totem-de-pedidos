@@ -5,42 +5,34 @@ import boto3
 
 from src.aws_cognito_idp import AuthService
 from src.aws_secrets_manager import get_aws_secrets
-
-
-def default_handler(event, context):
-    body = {
-        "message": "Pipeline funcionando com sucesso !",
-        "input": event,
-        "context_function_name": context.function_name,
-        "context_memory_limit_in_mb": context.memory_limit_in_mb,
-        "context_invoked_function_arn": context.invoked_function_arn,
-        "context_request_id": context.aws_request_id,
-        "method": event.get("httpMethod"),
-        "path": event.get("path"),
-        "headers": event.get("headers"),
-        "queryStringParameters": event.get("queryStringParameters"),
-        "body": event.get("body"),
-        "isBase64Encoded": event.get("isBase64Encoded")
-    }
-    response = {
-        "statusCode": 200,
-        "body": json.dumps(body)
-    }
-    return response
+from src.get_auth_use_case import get_auth_use_case
+from src.http_response import http_response
+from src.post_auth_ser_case import post_auth_use_case
 
 
 def lambda_handler(event, context):
+    logging.getLogger().setLevel(logging.INFO)
+
     cognito_client = boto3.client('cognito-idp')
 
     secrets = get_aws_secrets("fase3-lambda-totem-de-pedidos-secrets")
 
     service = AuthService(cognito_client, secrets)
 
-    response = service.authenticate_anonymous()
+    method = event.get("requestContext", {}).get("http", {}).get("method")
 
-    logging.info(json.dumps(response, indent=4, default=str))
+    if method == "OPTIONS":
+        return http_response(200, {"message": "CORS preflight check successful"})
+
+    if method == "GET":
+        query = event.get("queryStringParameters", {})
+        return get_auth_use_case(service=service, query=query)
+
+    if method == "POST":
+        body = json.loads(event.get("body", "{}"))
+        return post_auth_use_case(service=service, data=body)
 
     return {
-        "statusCode": 200,
-        "body": json.dumps(secrets)
+        "statusCode": 404,
+        "body": json.dumps({"message": "Not Found"})
     }

@@ -18,10 +18,14 @@ def main():
     #     cpf="14756424740"
     # )
 
-    result = service.authenticate_user(
-        username="14756424740",
-        password="Testando@12345"
-    )
+    # result = service.authenticate_user(
+    #     username="14756424740",
+    #     password="Testando@12345"
+    # )
+
+    response = service.authenticate_user("00000000000")
+
+    print(response)
 
     # result = service.search_user_by_cpf("00000000000")
 

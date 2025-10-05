@@ -7,9 +7,12 @@ class AuthService:
         self.default_password = secrets['COGNITO_DEFAULT_PASSWORD']
 
     def authenticate_anonymous(self):
-        return self.authenticate_user(self.default_username, self.default_password)
+        return self._authenticate_user(self.default_username, self.default_password)
 
-    def authenticate_user(self, username, password):
+    def authenticate_user(self, username):
+        return self._authenticate_user(username, self.default_password)
+
+    def _authenticate_user(self, username, password):
         return self.client.admin_initiate_auth(
             UserPoolId=self.user_pool_id,
             ClientId=self.client_id,
