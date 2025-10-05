@@ -26,7 +26,10 @@ def main():
     # response = service.authenticate_user("00000000000")
     # print(response)
 
-    result = service.search_user_by_cpf("00000000000a")
+    # result = service.search_user_by_cpf("00000000000a")
+    # print(result)
+
+    result = service.register_user('14756424740', 'Matheus Oliveira', 'teteuoliveira12@gmail.com')
     print(result)
 
 

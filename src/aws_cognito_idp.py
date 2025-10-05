@@ -23,7 +23,10 @@ class AuthService:
             }
         )
 
-    def register_user(self, cpf, password, name, email):
+    def register_user(self, cpf, name, email):
+        return self._register_user(cpf, self.default_password, name, email)
+
+    def _register_user(self, cpf, password, name, email):
         response = self.client.admin_create_user(
             UserPoolId=self.user_pool_id,
             Username=cpf,
