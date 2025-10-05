@@ -21,18 +21,18 @@ def lambda_handler(event, context):
 
     method = event.get("requestContext", {}).get("http", {}).get("method")
 
-    if method == "OPTIONS":
-        return http_response(200, {"message": "CORS preflight check successful"})
-
-    if method == "GET":
-        query = event.get("queryStringParameters", {})
-        return get_auth_use_case(service=service, query=query)
-
-    if method == "POST":
-        body = json.loads(event.get("body", "{}"))
-        return post_auth_use_case(service=service, data=body)
+    # if method == "OPTIONS":
+    #     return http_response(200, {"message": "CORS preflight check successful"})
+    #
+    # if method == "GET":
+    #     query = event.get("queryStringParameters", {})
+    #     return get_auth_use_case(service=service, query=query)
+    #
+    # if method == "POST":
+    #     body = json.loads(event.get("body", "{}"))
+    #     return post_auth_use_case(service=service, data=body)
 
     return {
         "statusCode": 404,
-        "body": json.dumps({"message": "Not Found"})
+        "body": json.dumps({"message": "Not Found", "method": method})
     }
