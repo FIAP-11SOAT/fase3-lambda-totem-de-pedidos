@@ -3,8 +3,8 @@ import logging
 
 import boto3
 
-from aws_cognito_idp import AuthService
-from aws_secrets_manager import get_aws_secrets
+from src.aws_cognito_idp import AuthService
+from src.aws_secrets_manager import get_aws_secrets
 
 
 def default_handler(event, context):

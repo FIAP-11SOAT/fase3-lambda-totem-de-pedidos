@@ -10,8 +10,8 @@ COPY ./requirements.txt ${LAMBDA_TASK_ROOT}/requirements.txt
 
 RUN --mount=type=cache,target=/root/.cache/uv uv pip install --system -r ${LAMBDA_TASK_ROOT}/requirements.txt
 
-COPY lambda ${LAMBDA_TASK_ROOT}/lambda
+COPY src ${LAMBDA_TASK_ROOT}/src
 
 ENV PYTHONPATH=$PYTHONPATH:${LAMBDA_TASK_ROOT}
 
-CMD [ "lambda.handler.lambda_handler" ]
+CMD [ "src.handler.lambda_handler" ]
