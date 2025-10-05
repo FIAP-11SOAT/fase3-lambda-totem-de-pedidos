@@ -1,10 +1,10 @@
 class AuthService:
     def __init__(self, client, secrets):
         self.client = client
-        self.user_pool_id = secrets['COGNITO_USER_POOL_ID']
-        self.client_id = secrets['COGNITO_USER_POOL_CLIENT_ID']
-        self.default_username = secrets['COGNITO_DEFAULT_USERNAME']
-        self.default_password = secrets['COGNITO_DEFAULT_PASSWORD']
+        self.user_pool_id = secrets["COGNITO_USER_POOL_ID"]
+        self.client_id = secrets["COGNITO_USER_POOL_CLIENT_ID"]
+        self.default_username = secrets["COGNITO_DEFAULT_USERNAME"]
+        self.default_password = secrets["COGNITO_DEFAULT_PASSWORD"]
 
     def authenticate_anonymous(self):
         return self._authenticate_user(self.default_username, self.default_password)
@@ -16,10 +16,10 @@ class AuthService:
         return self.client.admin_initiate_auth(
             UserPoolId=self.user_pool_id,
             ClientId=self.client_id,
-            AuthFlow='ADMIN_USER_PASSWORD_AUTH',
+            AuthFlow="ADMIN_USER_PASSWORD_AUTH",
             AuthParameters={
-                'USERNAME': username,
-                'PASSWORD': password
+                "USERNAME": username,
+                "PASSWORD": password
             }
         )
 
@@ -32,16 +32,21 @@ class AuthService:
             Username=cpf,
             TemporaryPassword=password,
             UserAttributes=[
-                {'Name': 'name', 'Value': name},
-                {'Name': 'email', 'Value': email},
+                {"Name": "name", "Value": name},
+                {"Name": "email", "Value": email},
             ],
-            MessageAction='SUPPRESS'
+            MessageAction="SUPPRESS"
         )
         self.client.admin_set_user_password(
             UserPoolId=self.user_pool_id,
             Username=cpf,
             Password=password,
             Permanent=True
+        )
+        self.client.admin_add_user_to_group(
+            UserPoolId=self.user_pool_id,
+            Username=cpf,
+            GroupName="customers"
         )
         return response
 
@@ -50,6 +55,6 @@ class AuthService:
             UserPoolId=self.user_pool_id,
             Filter=f'username = "{cpf}"'
         )
-        if user := response.get('Users'):
+        if user := response.get("Users"):
             return user[0]
         return None
