@@ -1,7 +1,13 @@
 import json
+import logging
+
+import boto3
+
+from aws_cognito_idp import AuthService
+from aws_secrets_manager import get_aws_secrets
 
 
-def lambda_handler(event, context):
+def default_handler(event, context):
     body = {
         "message": "Pipeline funcionando com sucesso !",
         "input": event,
@@ -21,3 +27,20 @@ def lambda_handler(event, context):
         "body": json.dumps(body)
     }
     return response
+
+
+def lambda_handler(event, context):
+    cognito_client = boto3.client('cognito-idp')
+
+    secrets = get_aws_secrets("fase3-lambda-totem-de-pedidos-secrets")
+
+    service = AuthService(cognito_client, secrets)
+
+    response = service.authenticate_anonymous()
+
+    logging.info(json.dumps(response, indent=4, default=str))
+
+    return {
+        "statusCode": 200,
+        "body": json.dumps(secrets)
+    }
