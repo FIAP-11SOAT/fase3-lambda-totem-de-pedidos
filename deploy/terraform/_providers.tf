@@ -7,4 +7,11 @@ provider "aws" {
       Terraform = "true"
     }
   }
+
+}
+
+
+provider "github" {
+  token = local.aws_master_secrets["GITHUB_ACCESS_TOKEN"]
+  owner = local.aws_master_secrets["GITHUB_ORG"]
 }

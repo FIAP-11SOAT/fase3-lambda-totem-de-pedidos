@@ -1,4 +1,3 @@
-
 resource "aws_cognito_user_pool" "user_pool" {
   name = "${local.project_name}-user-pool"
 
