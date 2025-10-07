@@ -33,7 +33,7 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.7.0
+          terraform_version: 1.11.0
           terraform_wrapper: false
 
       - name: Initialize Terraform for Lambda
@@ -55,7 +55,8 @@ jobs:
         run: terraform apply -auto-approve lambda
 
 
-  build-and-deploy:
+  build-image-and-push:
+    name: Build Docker Image and Push to ECR, Update Lambda
     runs-on: ubuntu-latest
 
     env:
