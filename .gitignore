@@ -8,6 +8,15 @@
 *.so
 *.dylib
 
+.idea/
+.venv/
+
+lambda-payload.json
+
+
+.terraform/
+.terraform.lock.hcl
+
 # Test binary, built with `go test -c`
 *.test
 
